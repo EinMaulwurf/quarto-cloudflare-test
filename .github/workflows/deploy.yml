@@ -25,9 +25,19 @@ jobs:
 
       - name: Install R Packages
         run: |
-          Rscript -e "install.packages('remotes', repos='https://cloud.r-project.org/')"
-          Rscript -e "remotes::install_cran(c('shiny', 'shinylive', 'ggplot2'))"
-          # Add any other R packages your site depends on
+          # Install remotes if not already available
+          if ! Rscript -e "require(remotes)" >/dev/null 2>&1; then
+            Rscript -e "install.packages('remotes', repos='https://cloud.r-project.org/')"
+          fi
+          
+          # Install shiny from CRAN
+          Rscript -e "install.packages('shiny', repos='https://cloud.r-project.org/')"
+          
+          # Install shinylive from CRAN
+          Rscript -e "install.packages('shinylive', repos='https://cloud.r-project.org/')"
+          
+          # Verify that shinylive is installed
+          Rscript -e "if (!require('shinylive')) { stop('shinylive installation failed') }"
 
       - name: Render Quarto Site
         run: quarto render
