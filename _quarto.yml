@@ -1,5 +1,5 @@
 project:
   title: "index"
 
-
-
+execute:
+  freeze: auto
