@@ -11,15 +11,19 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false  # Necessary for pushing with GitHub token
 
-      - uses: actions/checkout@v4
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: '3.5.3' # The R version to download (if necessary) and use.
-      - run: Rscript -e 'install.packages("shinylive")'
+          r-version: '4.3.1' # The R version to download (if necessary) and use.
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: 2
+          extra-packages: |
+            any::ggplot2
+            any::shinylive
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
